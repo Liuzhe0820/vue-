@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<script type="text/javascript" src='./vue.2.5.17.js'></script>
+	</head>
+	<body>
+		<div id="app">
+			<p>{{list}}</p>
+		</div>
+		<script type="text/javascript">
+			let vm = new Vue({
+				el:'#app',
+				data:{
+					list:[1,2,3]
+				}
+			});
+			/*
+			这种方法不能更新视图
+			vm.list[0]='x';
+			*/
+			vm.list.push(4);
+		</script>
+	</body>
+</html>

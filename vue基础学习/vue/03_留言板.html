@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>留言板</title>
+	</head>
+	<body>
+		<div id="app">
+			<input type="text" v-model='val'/>
+			<button type="button" v-on:click='sendHandle'>发送</button>
+			<ul>
+				<li v-for='(item,index) in list'>{{item.title}}</li>
+			</ul>
+		</div>
+		<script type="text/javascript" src='./vue.2.5.17.js'></script>
+		<script type="text/javascript">
+			let list = [
+				{
+					id:1,
+					title:'哈哈'
+				}
+			]
+			let vm = new Vue({
+				el:'#app',
+				data:{
+					list:list,
+					val:''
+				},
+				methods:{
+					sendHandle:function(){
+						this.list.push({
+							id:Date.now(),
+							title:this.val
+						});
+						this.val='';
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

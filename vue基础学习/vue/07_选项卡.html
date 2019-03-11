@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title></title>
+		<script type="text/javascript" src='./vue.2.5.17.js'></script>
+		<style type="text/css">
+			.red{
+				background-color:red;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<input 
+				type="button"
+				v-for='(item,i) in elData'
+				v-bind:value='item.title'
+				v-bind:class='{red:i===index}'
+				v-on:click = 'tabHandle(i)'
+			/>
+			<div 
+				v-for='(item,i) in elData'
+				v-bind:style='{display:i===index?"block":"none"}'
+			>
+				<p
+					v-for='(option,k) in item.list'
+				>
+					{{option.subTitle}}
+				</p>
+			</div>
+		</div>
+		<script type="text/javascript">
+			let elData = [
+				{
+					title:'新闻',
+					list:[
+						{
+							subTitle:'qqqq'
+						},
+						{
+							subTitle:'qqqq'
+						},
+						{
+							subTitle:'qqqq'
+						}
+					]
+				},
+				{
+					title:'体育',
+					list:[
+						{
+							subTitle:'wwwww'
+						},
+						{
+							subTitle:'wwwww'
+						},
+						{
+							subTitle:'wwwww'
+						}
+					]
+				},
+				{
+					title:'娱乐',
+					list:[
+						{
+							subTitle:'eeeee'
+						},
+						{
+							subTitle:'eeeee'
+						},
+						{
+							subTitle:'eeeee'
+						}
+					]
+				}
+			]
+			var vm = new Vue({
+				el:'#app',
+				data:{
+					elData:elData,
+					index:0
+				},
+				methods:{
+					tabHandle:function(i){
+						this.index=i;
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

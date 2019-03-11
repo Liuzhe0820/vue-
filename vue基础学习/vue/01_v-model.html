@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>v-model</title>
+</head>
+<body>
+    <div id='app'>
+        <input type="text" v-model="message"/>
+        <p v-on:click='prompt'>{{message}}</p>
+    </div>
+    <script src='./vue.2.5.17.js'></script>
+    <script>
+		/*v-model  双向数据绑定*/
+        let message = 'hello word';
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                message:message
+            },
+			methods:{
+				prompt:function(){
+					alert(this.message)
+				}
+			}
+        });
+
+    </script>
+</body>
+</html>
