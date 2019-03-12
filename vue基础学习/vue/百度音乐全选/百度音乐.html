@@ -1,101 +1,145 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-		<style>
-			body,
-			ul,
-			li {
-				margin: 0;
-				padding: 0;
-				list-style: none;
-			}
-			.list-body li:nth-child(even) {
-				background: yellow;
-			}
-			.list-body li:nth-child(odd) {
-				background: #fff;
-			}
-			.list-body li:hover {
-				background: green;
-			}
-			.list-body li.checkedColor {
-				background: green;
-			}
-		</style>
-		<link rel="stylesheet" type="text/css" href="css/baidu.css" />
-		<script src='../vue.2.5.17.js'></script>
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		body,
+		ul,
+		li {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
 
-	<body>
-		<div class="wrap" id="app">
-			<div class="baidu">
-				<ul class="list list-head">
-					<li>
-						<div>
-							<input type="checkbox" />全选
-						</div>
-						<span>歌单</span>
-						<span>歌手</span>
-						<span>专辑</span>
-					</li>
-				</ul>
-				<ul class="list list-body">
-					<li 
-						v-for='item,index in dataList'
-					>
-						<div><input type="checkbox"></div>
-						<span>{{item.song}}</span>
-						<span>{{item.name}}</span>
-						<span>{{item.album}}</span>
-					</li>
-					
-				</ul>
-				<div class="select">
-					<span class="selectAll">
+		.list-body li:nth-child(even) {
+			background: yellow;
+		}
 
-						<span>统计：</span>
-					</span>
-					<div class="others">
-						<span><em></em>歌手有：3位</span>
-						<span><em></em>专辑有5张</span>
+		.list-body li:nth-child(odd) {
+			background: #fff;
+		}
+
+		.list-body li:hover {
+			background: green;
+		}
+
+		.list-body li.checkedColor {
+			background: green;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="css/baidu.css" />
+	<script src='../vue.2.5.17.js'></script>
+</head>
+
+<body>
+	<div class="wrap" id="app">
+		<div class="baidu">
+			<ul class="list list-head">
+				<li>
+					<div>
+						<input type="checkbox" v-model='checkedAll' />全选
 					</div>
+					<span>歌单</span>
+					<span>歌手</span>
+					<span>专辑</span>
+				</li>
+			</ul>
+			<ul class="list list-body">
+				<li v-for='item,index in dataList'>
+					<div>
+						<input type="checkbox" v-model='item.checked'>
+					</div>
+					<span>{{item.song}}</span>
+					<span>{{item.name}}</span>
+					<span>{{item.album}}</span>
+				</li>
+
+			</ul>
+			<div class="select">
+				<span class="selectAll">
+
+					<span>统计：</span>
+				</span>
+				<div class="others">
+					<span>
+						<em></em>歌手有：{{selectedSongerLen}}位</span>
+					<span>
+						<em></em>专辑有{{album}}张</span>
 				</div>
 			</div>
 		</div>
-		<script>
-			let data = [
-				{
-					id:Date.now()+Math.random(),
-					name: '邓紫棋',
-					song: '泡沫',
-					checked: false,
-					album: 10
+	</div>
+	<script>
+		let data = [
+			{
+				id: Date.now() + Math.random(),
+				name: '邓紫棋',
+				song: '泡沫',
+				checked: true,
+				album: 10
+			},
+			{
+				id: Date.now() + Math.random(),
+				name: '王杰',
+				song: '泡沫',
+				checked: false,
+				album: 10
+			},
+			{
+				id: Date.now() + Math.random(),
+				name: '邓紫棋',
+				song: '泡沫',
+				checked: false,
+				album: 10
+			}
+		];
+		// var a=data.reduce(function(n,item1){
+		// 	console.log(n);
+		// 	console.log(item1.album)
+		// 	return n+item1.album
+		// },0);
+		// console.log(a);
+		new Vue({
+			el: '#app',
+			data: {
+				dataList: data
+			},
+			computed: {
+				checkedAll: {
+					get() {
+						//every方法：当数组中每一项都满足条件返回true，只要有一项不满足返回flase
+						var bl = this.dataList.every(function (item) {
+							return item.checked == true
+						});
+						return bl
+					},
+					set(newVal){
+						this.dataList.forEach(function(item){
+							item.checked = newVal
+						});
+					}
 				},
-				{
-					id:Date.now()+Math.random(),
-					name: '王杰',
-					song: '泡沫',
-					checked: false,
-					album: 10
+				selectedSongerLen: function () {
+					var songerLen = this.dataList.filter(function (item) {
+						return item.checked === true
+					}).length;
+					return songerLen
 				},
-				{
-					id:Date.now()+Math.random(),
-					name: '邓紫棋',
-					song: '泡沫',
-					checked: false,
-					album: 10
+				album: function () {
+					var blbumArr = this.dataList.filter(function (item) {
+						return item.checked === true
+					});
+					var n=0;
+					blbumArr.forEach(function(item){
+						n+=item.album
+					});
+					return n
 				}
-			]
-			new Vue({
-				el:'#app',
-				data:{
-					dataList:data
-				}
-			});
-		</script>
-	</body>
+			}
+		});
+	</script>
+</body>
 
 </html>
