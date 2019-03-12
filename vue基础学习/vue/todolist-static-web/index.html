@@ -13,10 +13,7 @@
         <div>
             <header class="header">
                 <h1>todos</h1>
-                <input 
-                    class="new-todo" placeholder="请输入内容" 
-                    v-on:keyUp='addItem(value)'
-                />
+                <input class="new-todo" placeholder="请输入内容" v-on:keyup='addItem($event,value)' />
             </header>
             <section class="main" id='app'>
                 <input class="toggle-all" type="checkbox" />
@@ -71,22 +68,26 @@
             }
     ]*/
     var data = [
-      
+
     ]
     new Vue({
         el: '#app',
         data: {
             dataObj: data
         },
-        computed:{
+        computed: {
 
         },
-        methods:{
-            addItem:function(val){
-                this.dataObj.push({
-                    text:val,
-                    ischenced:false
-                })
+        methods: {
+            addItem: function (ev, val) {
+                console.log(1);
+                if (ev.code === 13) {
+                    this.dataObj.push({
+                        text: val,
+                        ischenced: false
+                    })
+                }
+
             }
         }
     });
