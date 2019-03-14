@@ -8,33 +8,41 @@
 		<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
 		<!-- CSS overrides - remove if you don't need it -->
 		<link rel="stylesheet" href="css/app.css">
+		<script src='./js/vue.2.5.17.js'></script>
+		<style>
+			[v-cloak]{
+				display:none;
+			}
+		</style>
 	</head>
 	<body>
-		<section class="todoapp">
+		<section class="todoapp" id='app' v-cloak>
 			<header class="header">
-				<h1>todos</h1>
-				<input class="new-todo" placeholder="What needs to be done?" autofocus>
+				<h1>{{title}}</h1>
+				<input class="new-todo" placeholder="What needs to be done?" autofocus
+					v-model='inputVal'
+					v-on:keyup.enter='addItem(inputVal)'
+				>
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section class="main">
-				<input id="toggle-all" class="toggle-all" type="checkbox">
+				<input id="toggle-all" class="toggle-all" type="checkbox"
+					v-model='checkendAll'
+				>
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list">
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-					<li class="completed">
+					<li 
+						v-for='item,index in dataObj'
+						v-bind:class='{completed:item.ischecked}'
+					>
 						<div class="view">
-							<input class="toggle" type="checkbox" checked>
-							<label>Taste JavaScript</label>
-							<button class="destroy"></button>
-						</div>
-						<input class="edit" value="Create a TodoMVC template">
-					</li>
-					<li>
-						<div class="view">
-							<input class="toggle" type="checkbox">
-							<label>Buy a unicorn</label>
-							<button class="destroy"></button>
+							<input v-model='item.ischecked' class="toggle" type="checkbox">
+							<label>{{item.text}}</label>
+							<button class="destroy"
+								v-on:click='removeItem(item.id)'
+							></button>
 						</div>
 						<input class="edit" value="Rule the web">
 					</li>
@@ -43,7 +51,7 @@
 			<!-- This footer should hidden by default and shown when there are todos -->
 			<footer class="footer">
 				<!-- This should be `0 items left` by default -->
-				<span class="todo-count"><strong>0</strong> item left</span>
+				<span class="todo-count"><strong>{{checkedLen}}</strong> item left</span>
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
@@ -57,7 +65,12 @@
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed">Clear completed</button>
+				<button class="clear-completed"
+					v-show='!isShowRemoveAll'
+					v-on:click='removeAll()'
+				>
+					Clear completed
+				</button>
 			</footer>
 		</section>
 		<footer class="info">
