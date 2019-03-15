@@ -1,6 +1,5 @@
 (function (window) {
 	'use strict';
-
 	// Your starting point. Enjoy the ride!
 	new Vue({
 		el: '#app',
@@ -8,7 +7,8 @@
 			title: 'todoList',
 			inputVal: '',
 			dataObj: [],
-			num:0
+			num:0,
+			value:0
 		},
 		computed: {
 			checkendAll: {
@@ -39,8 +39,20 @@
 				bl = this.dataObj.every(function(item){
 					return item.ischecked === false
 				});
-				console.log(bl)
 				return bl
+			},
+			filterList:function(value){
+				if(this.value===1){
+					return this.dataObj.filter(function(item){
+						return item.ischecked===true
+					});
+				}else if(this.value===2){
+					return this.dataObj.filter(function(item){
+						return item.ischecked===false
+					});
+				}else{
+					return this.dataObj
+				}
 			}
 		},
 		methods: {
@@ -52,6 +64,7 @@
 				this.dataObj.push({
 					text: val,
 					ischecked: false,
+					isChange:false,
 					id:this.num++
 				});
 				this.inputVal = '';
@@ -67,12 +80,30 @@
 			},
 			removeAll:function(){
 				var _this = this;
+				for(let i=_this.dataObj.length-1;i>=0;i--){
+					if(_this.dataObj[i].ischecked){
+						_this.dataObj.splice(i,1);
+					}
+				}
+			},
+			changeList:function(value){
+				this.value = value
+			},
+			changeItem:function(id){
 				this.dataObj.forEach(function(item){
-					if(item.ischecked){
-						_this.dataObj.splice(index,1);
+					if(item.id===id){
+						item.isChange=true
 					}
 				});
-			}
+			},
+			modityItem:function(text,id){
+				this.dataObj.forEach(function(item){
+					if(item.id===id){
+						item.text=text;
+						item.isChange=false
+					}
+				});
+			}	
 		}
 	});
 })(window);
